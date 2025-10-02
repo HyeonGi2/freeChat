@@ -30,9 +30,35 @@ public class ArticleController {
     }
 
     // 게시물 수정
-//    @RequestMapping("/edit")
-//    @ResponseBody
-//    public
+    @RequestMapping("/edit")
+    @ResponseBody
+    public Article editArticle(long id, String title, String body) {
+        Article article = articleRepository.findById(id).get();
+        if (title != null) {
+            article.setTitle(title);
+        }
 
+        if (body != null) {
+            article.setBody(body);
+        }
 
+            articleRepository.save(article);
+
+            return article;
+        }
+
+        // 게시물 삭제
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String deleteArticle(long id) {
+
+        if (articleRepository.existsById(id) == false) {
+            return "%d번 게시물은 이미 삭제되었거나 존재하지 않습니다.".formatted(id);
+        }
+
+        articleRepository.deleteById(id); //삭제
+        return "%d번 게시물이 삭제되었습니다.".formatted(id);
+    }
 }
+
+
