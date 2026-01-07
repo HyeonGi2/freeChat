@@ -2,6 +2,7 @@ package org.mysite.freechat.article;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,6 +59,11 @@ public class ArticleController {
 
         articleRepository.deleteById(id); //삭제
         return "%d번 게시물이 삭제되었습니다.".formatted(id);
+    }
+
+    @GetMapping("/")
+    public String root() {
+        return "redirect:/main/article/list";
     }
 }
 
