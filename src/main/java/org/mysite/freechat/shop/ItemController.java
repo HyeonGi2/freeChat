@@ -3,10 +3,12 @@ package org.mysite.freechat.shop;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ItemController {
@@ -30,11 +32,12 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam String title, Integer price) {
+    String addPost(@RequestParam String title,@RequestParam Integer price) {
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
         itemRepository.save(item);
+
         return "redirect:/list";
     }
 // 위에 내용 간략히 적용하기
@@ -62,5 +65,21 @@ public class ItemController {
 //
 //        return "redirect:/list";
 //    }
+
+
+    // 상품 상세페이지 api
+
+    @GetMapping("/detail/{id}")
+    String detail(@PathVariable Long id, Model model) {
+        Optional<Item> result = itemRepository.findById(id);
+        if ( result.isPresent() ){
+            model.addAttribute("data", result.get());
+            return "detail.html";
+        } else {
+            return "redirect:/list";
+        }
+
+
+    }
 
 }
