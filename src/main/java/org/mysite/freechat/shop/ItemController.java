@@ -30,11 +30,20 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam String title, String  price) {
-        System.out.println(title);
-        System.out.println(price);
+    String addPost(@RequestParam String title, Integer price) {
+        Item item = new Item();
+        item.setTitle(title);
+        item.setPrice(price);
+        itemRepository.save(item);
         return "redirect:/list";
     }
+// 위에 내용 간략히 적용하기
+//    @PostMapping("/add")
+//    String addPost(@ModelAttribute Item item) {
+//        System.out.println(item);
+//        itemRepository.save(item);
+//        return "redirect:/list";
+//    }
 
 //    맵자료형
 //    @PostMapping("/add")
