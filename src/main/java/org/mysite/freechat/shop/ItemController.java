@@ -2,13 +2,17 @@
 * 작성자명 : 홍현기
 * 수정일시 및 추가 내용
 - 2026-01-14
-* 타임리프 error.html 파일 추가
-* REST API는 try/catch 또는 @ExceptionHandler 사용
-* ResponseEntity로 에러코드 전송하기
+1. 타임리프 error.html 파일 추가
+2. REST API는 try/catch 또는 @ExceptionHandler 사용
+3. ResponseEntity로 에러코드 전송하기
+4. @PostMapping("/add") 비즈니스 로직을 서비스 레이어로 분리
+* 오류발생1번(해결) - 오류 발생 이유
+* @RequiredArgsConstructor가 생성자를 만들었으나 같은 생성자를 반복 생성하여 오류 발생
 --------------------------------------------------------------*/
 
 package org.mysite.freechat.shop;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +24,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class ItemController {
 
     private final ItemRepository itemRepository;
-
-    public ItemController(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
+    private final ItemService itemService;
+// 오류발생1번
+//    @Autowired
+//    public ItemController(ItemRepository itemRepository, ItemService itemService) {
+//        this.itemRepository = itemRepository;
+//        this.itemService = itemService;
+//    }
 
     @GetMapping("/list")
     String list(Model model) {
@@ -42,11 +50,12 @@ public class ItemController {
 
     @PostMapping("/add")
     String addPost(@RequestParam String title, @RequestParam Integer price) {
-        Item item = new Item();
-        item.setTitle(title);
-        item.setPrice(price);
-        itemRepository.save(item);
+//        Item item = new Item();
+//        item.setTitle(title);
+//        item.setPrice(price);
+//        itemRepository.save(item);
 
+        itemService.saveItem(title, price);
         return "redirect:/list";
     }
 // 위에 내용 간략히 적용하기
