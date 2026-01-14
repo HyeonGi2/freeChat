@@ -1,3 +1,12 @@
+/*--------------------------------------------------------------
+* 작성자명 : 홍현기
+* 수정일시 및 추가 내용
+- 2026-01-14
+* 타임리프 error.html 파일 추가
+* REST API는 try/catch 또는 @ExceptionHandler 사용
+* ResponseEntity로 에러코드 전송하기
+--------------------------------------------------------------*/
+
 package org.mysite.freechat.shop;
 
 import org.springframework.stereotype.Controller;
@@ -32,7 +41,7 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam String title,@RequestParam Integer price) {
+    String addPost(@RequestParam String title, @RequestParam Integer price) {
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
@@ -71,15 +80,21 @@ public class ItemController {
 
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model) {
+//    String detail(@PathVariable Long id, Model model) throws  Exception {
+//        throw new Exception();
         Optional<Item> result = itemRepository.findById(id);
-        if ( result.isPresent() ){
+        if (result.isPresent()) {
             model.addAttribute("data", result.get());
             return "detail.html";
         } else {
             return "redirect:/list";
         }
-
-
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//            return ResponseEntity.status(400).body("오류");
+// 서버오류는 500 유저오류는 400 정상 200 HTTP status code 가이드 참고
     }
-
 }
+
+
