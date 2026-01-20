@@ -4,7 +4,7 @@
 - 2026-01-14
 1. ItemController의 @PostMapping("/add") 비즈니스 로직을 서비스 레이어로 분리
 --------------------------------------------------------------*/
-package org.mysite.freechat.shop;
+package org.mysite.freechat.shop.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

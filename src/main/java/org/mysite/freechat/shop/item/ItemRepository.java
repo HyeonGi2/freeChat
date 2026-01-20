@@ -1,4 +1,4 @@
-package org.mysite.freechat.shop;
+package org.mysite.freechat.shop.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

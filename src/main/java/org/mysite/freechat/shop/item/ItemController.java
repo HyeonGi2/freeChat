@@ -10,7 +10,7 @@
 * @RequiredArgsConstructor가 생성자를 만들었으나 같은 생성자를 반복 생성하여 오류 발생
 --------------------------------------------------------------*/
 
-package org.mysite.freechat.shop;
+package org.mysite.freechat.shop.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -104,6 +104,34 @@ public class ItemController {
 //            return ResponseEntity.status(400).body("오류");
 // 서버오류는 500 유저오류는 400 정상 200 HTTP status code 가이드 참고
     }
+
+
+    @GetMapping("/edit/{id}")
+    String edit(Model model, @PathVariable Long id) {
+
+        Optional<Item> result = itemRepository.findById(id);
+        if (result.isPresent()) {
+            model.addAttribute("data", result.get());
+            return "edit.html";
+        } else {
+            return "redirect:/list";
+        }
+
+    }
+
+    @PostMapping("/edit")
+    String editItem(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
+
+        Item item = new Item();
+        item.setId(id);
+        item.setTitle(title);
+        item.setPrice(price);
+        itemRepository.save(item);
+        return "redirect:/list";
+    }
+
+
+
 }
 
 
