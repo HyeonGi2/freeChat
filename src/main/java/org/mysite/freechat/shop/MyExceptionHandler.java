@@ -11,13 +11,16 @@
 package org.mysite.freechat.shop;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
 public class MyExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handler() {
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseBody
+    public ResponseEntity<String> apiHandler() {
         return ResponseEntity.status(400).body("오류발생22");
     }
 //    특정 오류 상황
@@ -25,5 +28,15 @@ public class MyExceptionHandler {
 //    public ResponseEntity<String> handler1() {
 //        return ResponseEntity.status(400).body("오류발생33");
 //    }
+
+
+//
+    @ExceptionHandler(Exception.class)
+    public String viewHandler(Model model) {
+        model.addAttribute("message", "시스템 오류");
+        return "error";
+    }
+
+
 }
 

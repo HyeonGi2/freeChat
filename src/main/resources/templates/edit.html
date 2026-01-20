@@ -18,6 +18,9 @@
     <input name="price" th:value="${data.price}">
     <button type="submit">전송</button>
 </form>
+<div th:if="${errorMessage}" style="color: red; margin-bottom: 10px;">
+    <p th:text="${errorMessage}"></p>
+</div>
 
 </body>
 </html>

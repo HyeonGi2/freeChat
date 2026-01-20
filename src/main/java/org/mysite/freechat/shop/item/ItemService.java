@@ -30,4 +30,11 @@ public class ItemService {
         itemRepository.save(item);
     }
 //    saveItem("이름", 321321);
+
+
+    public Item findById(Long id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
+
+    }
 }

@@ -130,16 +130,35 @@ public class ItemController {
 //        return "redirect:/list";
 //    } 서비스 와이어로 분리
     @PostMapping("/edit")
-    String editPost(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
+    String editPost(@RequestParam String title, @RequestParam(required = false) Integer price, @RequestParam Long id, Model model) {
 
         // 음수 제한
-        if (price < 0) {
-            throw new IllegalArgumentException("음수는 입력 불가");
+//        if (price < 0) {
+//            throw new IllegalArgumentException("음수는 입력 불가");
+//        }
+        
+        //음수 제한. 에러페이지로 보내는 것이 아닌 문구로 띄우기
+
+        if(price == null || price < 0) {
+            model.addAttribute("errorMessage", "음수는 입력 불가");
+            model.addAttribute("data", itemService.findById(id));
+            return "edit";
         }
 
         // 자릿수 제한
-        if (price.toString().length() > 100) {
-            throw new IllegalArgumentException("너무 큰 자릿수 입력 불가");
+//        if (price.toString().length() > 100) {
+//            throw new IllegalArgumentException("너무 큰 자릿수 입력 불가");
+//        }
+
+        // 자음 모음 입력 방지
+//        if (title.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+//            throw new IllegalArgumentException("자음 또는 모음 입력 불가");
+//        }
+        // 자음 모음 입력 방지
+        if (title.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+            model.addAttribute("errorMessage", "자음 또는 모음 입력 불가");
+            model.addAttribute("data", itemService.findById(id));
+            return "edit";
         }
 
         // 검증 완료 후 저장
