@@ -40,7 +40,7 @@ public class ItemController {
     String list(Model model) {
         List<Item> result = itemRepository.findAll();
         model.addAttribute("items", result);
-        return "main.html";
+        return "list.html";
     }
 
     @GetMapping("/write")
@@ -119,14 +119,19 @@ public class ItemController {
 
     }
 
+//    @PostMapping("/edit")
+//    String editItem(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
+//
+//        Item item = new Item();
+//        item.setId(id);
+//        item.setTitle(title);
+//        item.setPrice(price);
+//        itemRepository.save(item);
+//        return "redirect:/list";
+//    } 서비스 와이어로 분리
     @PostMapping("/edit")
-    String editItem(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
-
-        Item item = new Item();
-        item.setId(id);
-        item.setTitle(title);
-        item.setPrice(price);
-        itemRepository.save(item);
+    String editPost(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
+        itemService.editItem(title, price, id);
         return "redirect:/list";
     }
 
