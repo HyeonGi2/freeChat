@@ -131,7 +131,23 @@ public class ItemController {
 //    } 서비스 와이어로 분리
     @PostMapping("/edit")
     String editPost(@RequestParam String title, @RequestParam Integer price, @RequestParam Long id) {
+
+        // 음수 제한
+        if (price < 0) {
+            throw new IllegalArgumentException("음수는 입력 불가");
+        }
+
+        // 자릿수 제한
+        if (price.toString().length() > 100) {
+            throw new IllegalArgumentException("너무 큰 자릿수 입력 불가");
+        }
+
+        // 검증 완료 후 저장
         itemService.editItem(title, price, id);
+
+
+
+
         return "redirect:/list";
     }
 
