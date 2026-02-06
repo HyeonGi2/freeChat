@@ -35,8 +35,40 @@
         <a th:href="@{'/detail/' + ${i.id} }">자세히 보기</a>
         <p th:text="${i.price + '원'}">7억</p>
         <a th:href="@{/edit/{id}(id=${i.id})}">수정</a>
+        <span th:onclick="fetch(`/item?id=[[${i.id}]]`, {method : 'DELETE'})
+        .then(r => r.text())
+        .then(a =>  {
+            location.reload();
+        })
+        ">삭제</span>
     </div>
 </div>
+
+<button class="btn_1">
+    버튼
+</button>
+
+<script>
+    document.querySelectorAll('.btn_1')[0].addEventListener('click', function () {
+        fetch('test1', {
+            method : 'POST',
+            headers : { 'Content-Type' : 'application/json' },
+            body : JSON.stringify({name : 'kim'})
+        })
+
+    })
+</script>
+
+<!--간단한 내용 query string 그러나 보안 취약-->
+<!--<script>-->
+<!--    document.querySelectorAll('.btn_1')[0].addEventListener('click', function () {-->
+<!--        fetch('test1?name=kim&age=20')-->
+<!--    })-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    fetch('/test1')-->
+<!--</script>-->
 
 
 

@@ -1,7 +1,5 @@
 /*--------------------------------------------------------------
 * 작성자명 : 홍현기
-* 수정일시 및 추가 내용
-- 2026-01-14
 1. 타임리프 error.html 파일 추가
 2. REST API는 try/catch 또는 @ExceptionHandler 사용
 3. ResponseEntity로 에러코드 전송하기
@@ -13,14 +11,13 @@
 package org.mysite.freechat.shop.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -145,15 +142,16 @@ public class ItemController {
             return "edit";
         }
 
-        // 자릿수 제한
-//        if (price.toString().length() > 100) {
-//            throw new IllegalArgumentException("너무 큰 자릿수 입력 불가");
-//        }
+//         자릿수 제한
+        if (price.toString().length() > 100) {
+            throw new IllegalArgumentException("큰 자릿수 입력 불가");
+        }
 
-        // 자음 모음 입력 방지
+//         자음 모음 입력 방지
 //        if (title.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
 //            throw new IllegalArgumentException("자음 또는 모음 입력 불가");
 //        }
+
         // 자음 모음 입력 방지
         if (title.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
             model.addAttribute("errorMessage", "자음 또는 모음 입력 불가");
@@ -168,6 +166,27 @@ public class ItemController {
 
 
         return "redirect:/list";
+    }
+
+
+    @PostMapping("/test1")
+    String test1(@RequestBody Map<String, Object> body) {
+        System.out.println(body.get("name"));
+        return "redirect:/list";
+        }
+
+        // 간단한 내용 보낼 때, 가독성 편함 그러나 보안 취약
+//    @GetMapping("/test1")
+//    String test1(@RequestParam String name) {
+//        System.out.println(name);
+//        return "redirect:/list";
+//    }
+
+    @DeleteMapping("/item")
+    ResponseEntity<String> deleteItem(@RequestParam Long id) {
+        itemRepository.deleteById(id);
+        return ResponseEntity.status(200).body("삭제완료");
+//        return "redirect:/list";
     }
 
 

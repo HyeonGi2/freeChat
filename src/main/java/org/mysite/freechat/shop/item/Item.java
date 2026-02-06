@@ -1,9 +1,6 @@
 package org.mysite.freechat.shop.item;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +14,8 @@ public class Item {
     public Long id;
     private String title;
     private Integer price;
+    @Column(nullable = false)
+    private Integer stock = 0; // 기본값
 
 //    public String toString() {
 //        return this.title + this.price;
